@@ -71,13 +71,36 @@ hold off
 
 figure
 hold on
-cdfplot(watt_p1)
-cdfplot(watt_p2)
-title('CDF Distribution LOS (Rician)')
+cdfLOS = cdfplot(watt_p1);
+cdfNLOS = cdfplot(watt_p2);
+title('Both distributions')
+legend('LOS','NLOS')
 yline(0.5)
 %xlim([0 16])
 hold off
 
+%Find the value for which the CDF of the LOS is 50%
+cdfLOSx = cdfLOS.XData;
+cdfLOSy = cdfLOS.YData;
+percentvalueLOS = cdfLOSx(cdfLOSy == 0.5);
+
+cdfNLOSx = cdfNLOS.XData;
+cdfNLOSy = cdfNLOS.YData;
+
+percentvalueNLOS = cdfNLOSy(cdfNLOSx >= percentvalueLOS(1));
+disp(percentvalueNLOS(1))
+
+figure
+hold on
+cdfLOS = cdfplot(watt_p1);
+cdfNLOS = cdfplot(watt_p2);
+title('Both distributions with lines')
+legend('LOS','NLOS','LOS == 0.5','x-value','percentage of NLOS')
+yline(0.5)
+xline(percentvalueLOS(1))
+yline(percentvalueNLOS(1))
+%xlim([0 16])
+hold off
 % figure
 % hold on
 % cdfplot((watt_p1)/std(watt_p1))
