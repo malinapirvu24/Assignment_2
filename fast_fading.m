@@ -7,6 +7,7 @@ figure
 plot(P_1)
 title("P_1")
 ylabel('dBW')
+
 figure
 histogram(abs(P_1))
 xlim([50 110])
@@ -34,6 +35,24 @@ watt_p1 = 10.^(P_1/10);
 watt_p2 = 10.^(P_2/10);
 meanWatt_p1 = mean(watt_p1);
 meanWatt_p2 = mean(watt_p2);
+
+figure
+hold on
+histogram(watt_p1, 100)
+ylabel('Frequency')
+xlabel('Power (W)')
+xlim([0 5e-6])
+ylim([0 1000])
+hold off
+
+figure
+hold on
+histogram(watt_p2, 100)
+ylabel('Frequency')
+xlabel('Power (W)')
+xlim([0 5e-6])
+ylim([0 1000])
+hold off
 
 p_f = meanWatt_p2; %in Watt
 p_m = meanWatt_p1 - meanWatt_p2; %p_{rec,mean} - p_f in Watt
