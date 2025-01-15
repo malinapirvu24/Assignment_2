@@ -39,6 +39,7 @@ meanWatt_p2 = mean(watt_p2);
 figure
 hold on
 histogram(watt_p1, 100)
+title('P_1')
 ylabel('Frequency')
 xlabel('Power (W)')
 xlim([0 5e-6])
@@ -48,6 +49,7 @@ hold off
 figure
 hold on
 histogram(watt_p2, 100)
+title('P_2')
 ylabel('Frequency')
 xlabel('Power (W)')
 xlim([0 5e-6])
