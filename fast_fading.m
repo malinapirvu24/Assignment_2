@@ -106,9 +106,9 @@ cdfLOS = cdfplot(watt_p1);
 cdfNLOS = cdfplot(watt_p2);
 title('Both distributions with lines')
 legend('LOS','NLOS')
-yline(0.5)
-xline(WattLOS(1))
-yline(percentvalueNLOS(1))
+yline(0.5, '-' ,'DisplayName', '50%')
+xline(WattLOS(1), ':', 'DisplayName', '0,88 \muW')
+yline(percentvalueNLOS(1), '--', 'DisplayName', '97.38%')
 hold off
 
 %% Question 5
