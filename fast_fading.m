@@ -32,26 +32,18 @@ mean_p2 = mean(P_2) %dB
 %Convert it to Watts
 watt_p1 = 10.^(P_1/10);
 watt_p2 = 10.^(P_2/10);
-%meanWatt_p1 = 10^(mean_p1/10)
-%meanWatt_p2 = 10^(mean_p2/10)
-meanWatt_p1 = mean(watt_p1)
-meanWatt_p2 = mean(watt_p2)
-%P = meanWatt_p1/meanWatt_p2 %Rician K-factor
+meanWatt_p1 = mean(watt_p1);
+meanWatt_p2 = mean(watt_p2);
 
-%P_dB = mean_p1 - mean_p2
 p_f = meanWatt_p2; %in Watt
-p_m = meanWatt_p1 - meanWatt_p2 %p_{rec,mean} - p_f in Watt
+p_m = meanWatt_p1 - meanWatt_p2; %p_{rec,mean} - p_f in Watt
 
-k = p_m/p_f
+k = p_m/p_f;
 
 %second method
 sigma_p = std(watt_p1);
 
 k_2 = ((sigma_p/p_f)^2 - 1)/2
-
-%k_3 = meanWatt_p1/p_f -1
-
-%sigma_p2 = p_f * sqrt(1 + 2*k_3)
 
 %% Histograms
 
@@ -59,14 +51,12 @@ figure
 hold on
 cdfplot(watt_p1)
 title('Distribution LOS (Rician)')
-%xlim([0 16])
 hold off
 
 figure
 hold on
 cdfplot(watt_p2)
 title('Distribution NLOS (Rayleigh)')
-%xlim([0 16])
 hold off
 
 figure
@@ -76,18 +66,17 @@ cdfNLOS = cdfplot(watt_p2);
 title('Both distributions')
 legend('LOS','NLOS')
 yline(0.5)
-%xlim([0 16])
 hold off
 
 %Find the value for which the CDF of the LOS is 50%
 cdfLOSx = cdfLOS.XData;
 cdfLOSy = cdfLOS.YData;
-percentvalueLOS = cdfLOSx(cdfLOSy == 0.5);
+WattLOS = cdfLOSx(cdfLOSy == 0.5);
 
 cdfNLOSx = cdfNLOS.XData;
 cdfNLOSy = cdfNLOS.YData;
 
-percentvalueNLOS = cdfNLOSy(cdfNLOSx >= percentvalueLOS(1));
+percentvalueNLOS = cdfNLOSy(cdfNLOSx >= WattLOS(1));
 disp(percentvalueNLOS(1))
 
 figure
@@ -97,22 +86,17 @@ cdfNLOS = cdfplot(watt_p2);
 title('Both distributions with lines')
 legend('LOS','NLOS')
 yline(0.5)
-xline(percentvalueLOS(1))
+xline(WattLOS(1))
 yline(percentvalueNLOS(1))
-%xlim([0 16])
-hold off
-% figure
-% hold on
-% cdfplot((watt_p1)/std(watt_p1))
-% cdfplot((watt_p2)/std(watt_p2))
-% hold off
-
-figure
-hold on
-title('CDF Distribution NLOS (Rayleigh)')
-histogram(watt_p2/meanWatt_p2,100, 'Normalization','cdf')
-yline(0.5)
-xline(1.1)
-xlim([0 16])
 hold off
 
+%% Question 5
+
+f = 5e3; %MHz
+b = 200e6; %Hz
+k_b = 1.38e-23;
+T = 17 + 273; %Kelvin
+
+N = k_b*T*b;
+
+SNR_min = 10*log10(WattLOS(1)/N); %dB
